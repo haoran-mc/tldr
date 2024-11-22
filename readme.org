@@ -1,0 +1,32 @@
+*run:*
+1. clone this repository: git clone git@github.com:haoran-mc/tldr.git && cd tldr
+2. create a python virtual environment: python -m venv .
+3. starting the virtual environment: source bin/activate
+4. download dependencies: pip install -r requirements.txt
+5. run: python tldr.py git log
+
+
+*compile:*
+1. ...
+
+
+*sample of a command:*
+#+begin_example
+# arch
+
+> Display the name of the system architecture, or run a command under a different architecture.
+> See also: `uname`.
+> More information: <https://keith.github.io/xcode-man-pages/arch.1.html>.
+
+- Display the system's architecture:
+
+`arch`
+
+- Run a command using x86_64:
+
+`arch -x86_64 "{{command}}"`
+
+- Run a command using arm:
+
+`arch -arm64 "{{command}}"`
+#+end_example
