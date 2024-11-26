@@ -177,7 +177,7 @@ def main() -> None:
     else:
         # render local markdown files
         file_name = "-".join(options.command)
-        proj_path = os.path.abspath(".")
+        proj_path = os.path.abspath(os.path.dirname(__file__))
         file_path = Path(proj_path + "/files/" + file_name + ".md")
         if file_path.exists():
             with file_path.open(encoding="utf-8") as open_file:
