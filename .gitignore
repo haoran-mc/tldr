@@ -4,3 +4,5 @@
 /pyvenv.cfg
 
 .DS_Store
+/ran_tldr.egg-info/
+__pycache__/

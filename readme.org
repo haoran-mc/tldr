@@ -7,7 +7,9 @@
 
 
 *compile:*
-1. ...
+1. compile: pip install -e .
+2. usage: ran-tldr git log
+3. You may replace the command name specified in ~pyproject.toml~ with whatever you like.
 
 
 *sample of a command:*
