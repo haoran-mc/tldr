@@ -13,11 +13,11 @@ from termcolor._types import Color, Highlight, Attribute
 from typing import cast, Match
 
 DEFAULT_COLORS = {
-    "name": "bold",
-    "description": "",
-    "example": "green",
-    "command": "red",
-    "parameter": "",
+    "title": "bold",
+    "desc": "",
+    "list": "green",
+    "code": "red",
+    "param": "",
 }
 
 # See more details in the README:
@@ -39,8 +39,8 @@ ACCEPTED_COLOR_ATTRS = ["reverse", "blink", "dark", "concealed", "underline", "b
 
 LEADING_SPACES_NUM = 2
 
-EXAMPLE_SPLIT_REGEX = re.compile(r"(?P<example>`.+?`)")
-EXAMPLE_REGEX = re.compile(r"(?:`)(?P<example>.+?)(?:`)")
+EXAMPLE_SPLIT_REGEX = re.compile(r"(?P<list>`.+?`)")
+EXAMPLE_REGEX = re.compile(r"(?:`)(?P<list>.+?)(?:`)")
 COMMAND_SPLIT_REGEX = re.compile(r"(?P<param>{{.+?}*}})")
 PARAM_REGEX = re.compile(r"(?:{{)(?P<param>.+?)(?:}})")
 
@@ -75,7 +75,7 @@ def output(page: List[bytes]) -> None:
     def emphasise_example(x: Match) -> str:
         # Use ANSI escapes to enable italics at the start and disable at the end
         # Also use the color yellow to differentiate from the default green
-        return "\x1b[3m" + colored(x.group("example"), "yellow") + "\x1b[23m"
+        return "\x1b[3m" + colored(x.group("list"), "yellow") + "\x1b[23m"
 
     for line in page:
         line = line.rstrip().decode("utf-8")
@@ -83,12 +83,12 @@ def output(page: List[bytes]) -> None:
         if len(line) == 0:
             continue
 
-        # Handle the command name
+        # Handle the command title
         elif line[0] == "#":
             line = (
                 "\n"
                 + " " * LEADING_SPACES_NUM
-                + colored(line.replace("# ", ""), *colors_of("name"))
+                + colored(line.replace("# ", ""), *colors_of("title"))
                 + "\n"
             )
             sys.stdout.buffer.write(line.encode("utf-8"))
@@ -96,7 +96,7 @@ def output(page: List[bytes]) -> None:
         # Handle the command description
         elif line[0] == ">":
             line = " " * (LEADING_SPACES_NUM - 1) + colored(
-                line.replace(">", "").replace("<", ""), *colors_of("description")
+                line.replace(">", "").replace("<", ""), *colors_of("desc")
             )
             sys.stdout.buffer.write(line.encode("utf-8"))
 
@@ -109,7 +109,7 @@ def output(page: List[bytes]) -> None:
                 for item in EXAMPLE_SPLIT_REGEX.split(line):
                     item, replaced = EXAMPLE_REGEX.subn(emphasise_example, item)
                     if not replaced:
-                        item = colored(item, *colors_of("example"))
+                        item = colored(item, *colors_of("list"))
                     elements.append(item)
 
                 line = "".join(elements)
@@ -119,7 +119,7 @@ def output(page: List[bytes]) -> None:
                 line = (
                     "\n"
                     + " " * LEADING_SPACES_NUM
-                    + colored(line, *colors_of("example"))
+                    + colored(line, *colors_of("list"))
                 )
 
             sys.stdout.buffer.write(line.encode("utf-8"))
@@ -135,10 +135,10 @@ def output(page: List[bytes]) -> None:
             elements = [" " * 2 * LEADING_SPACES_NUM]
             for item in COMMAND_SPLIT_REGEX.split(line):
                 item, replaced = PARAM_REGEX.subn(
-                    lambda x: colored(x.group("param"), *colors_of("parameter")), item
+                    lambda x: colored(x.group("param"), *colors_of("param")), item
                 )
                 if not replaced:
-                    item = colored(item, *colors_of("command"))
+                    item = colored(item, *colors_of("code"))
                 elements.append(item)
 
             line = "".join(elements)
