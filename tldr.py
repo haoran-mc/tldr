@@ -37,7 +37,7 @@ ACCEPTED_COLOR_BACKGROUNDS = [
 
 ACCEPTED_COLOR_ATTRS = ["reverse", "blink", "dark", "concealed", "underline", "bold"]
 
-LEADING_SPACES_NUM = 2
+SPACES = 2
 
 EXAMPLE_SPLIT_REGEX = re.compile(r"(?P<list>`.+?`)")
 EXAMPLE_REGEX = re.compile(r"(?:`)(?P<list>.+?)(?:`)")
@@ -70,19 +70,12 @@ def colors_of(
 
 
 def color_title(text: str) -> str:
-    text = (
-        "\n"
-        + " " * LEADING_SPACES_NUM
-        + colored(text.replace("# ", ""), *colors_of("title"))
-        + "\n"
-    )
+    text = colored(text.replace("# ", ""), *colors_of("title")) + "\n"
     return text
 
 
 def color_desc(text: str) -> str:
-    text = " " * (LEADING_SPACES_NUM - 1) + colored(
-        text.replace(">", "").replace("<", ""), *colors_of("desc")
-    )
+    text = colored(text.replace("> ", ""), *colors_of("desc")) + "\n"
     return text
 
 
@@ -90,8 +83,10 @@ def color_list(text: str) -> str:
     return text
 
 
-def color_code(text: str) -> str:
-    return text
+def color_code(text: Match) -> str:
+    # Use ANSI escapes to enable italics at the start and disable at the end
+    # Also use the color yellow to differentiate from the default green
+    return "\x1b[3m" + colored(text.group("list"), *colors_of("code")) + "\x1b[23m"
 
 
 def color_highlight(text: str) -> str:
@@ -121,7 +116,7 @@ def output(page: List[bytes]) -> None:
         elif line[0] == "-":
             # Stylize text within backticks using yellow italics
             if "`" in line:
-                elements = ["\n", " " * LEADING_SPACES_NUM]
+                elements = ["\n", " " * SPACES]
 
                 for item in EXAMPLE_SPLIT_REGEX.split(line):
                     item, replaced = EXAMPLE_REGEX.subn(emphasise_example, item)
@@ -133,15 +128,13 @@ def output(page: List[bytes]) -> None:
 
             # Otherwise, use the same colour for the whole line
             else:
-                line = (
-                    "\n" + " " * LEADING_SPACES_NUM + colored(line, *colors_of("list"))
-                )
+                line = "\n" + " " * SPACES + colored(line, *colors_of("list"))
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         # Handle an example command
         elif line[0] == "`":
             line = line[1:-1]  # Remove backticks for parsing
-            line = " " * 2 * LEADING_SPACES_NUM + line
+            line = " " * 2 * SPACES + line
             line = colored(line, *colors_of("code"))
             sys.stdout.buffer.write(line.encode("utf-8"))
         print()
