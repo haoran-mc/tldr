@@ -69,6 +69,35 @@ def colors_of(
     )
 
 
+def color_title(text: str) -> str:
+    text = (
+        "\n"
+        + " " * LEADING_SPACES_NUM
+        + colored(text.replace("# ", ""), *colors_of("title"))
+        + "\n"
+    )
+    return text
+
+
+def color_desc(text: str) -> str:
+    text = " " * (LEADING_SPACES_NUM - 1) + colored(
+        text.replace(">", "").replace("<", ""), *colors_of("desc")
+    )
+    return text
+
+
+def color_list(text: str) -> str:
+    return text
+
+
+def color_code(text: str) -> str:
+    return text
+
+
+def color_highlight(text: str) -> str:
+    return text
+
+
 def output(page: List[bytes]) -> None:
     def emphasise_example(x: Match) -> str:
         # Use ANSI escapes to enable italics at the start and disable at the end
@@ -81,24 +110,14 @@ def output(page: List[bytes]) -> None:
         if len(line) == 0:
             continue
 
-        # Handle the command title
         elif line[0] == "#":
-            line = (
-                "\n"
-                + " " * LEADING_SPACES_NUM
-                + colored(line.replace("# ", ""), *colors_of("title"))
-                + "\n"
-            )
+            line = color_title(line)
             sys.stdout.buffer.write(line.encode("utf-8"))
 
-        # Handle the command description
         elif line[0] == ">":
-            line = " " * (LEADING_SPACES_NUM - 1) + colored(
-                line.replace(">", "").replace("<", ""), *colors_of("desc")
-            )
+            line = color_desc(line)
             sys.stdout.buffer.write(line.encode("utf-8"))
 
-        # Handle an example description
         elif line[0] == "-":
             # Stylize text within backticks using yellow italics
             if "`" in line:
@@ -117,7 +136,6 @@ def output(page: List[bytes]) -> None:
                 line = (
                     "\n" + " " * LEADING_SPACES_NUM + colored(line, *colors_of("list"))
                 )
-
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         # Handle an example command
