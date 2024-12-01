@@ -13,11 +13,10 @@ from termcolor._types import Color, Highlight, Attribute
 from typing import cast, Match
 
 DEFAULT_COLORS = {
-    "title": "bold",
+    "title": "",
     "desc": "",
-    "list": "green",
-    "code": "red",
-    "param": "",
+    "plain": "",
+    "code": "blue",
 }
 
 # See more details in the README:
@@ -37,10 +36,10 @@ ACCEPTED_COLOR_BACKGROUNDS = [
 
 ACCEPTED_COLOR_ATTRS = ["reverse", "blink", "dark", "concealed", "underline", "bold"]
 
-SPACES = 2
+SPACES = 4
 
-EXAMPLE_SPLIT_REGEX = re.compile(r"(?P<list>~.+?~)")
-EXAMPLE_REGEX = re.compile(r"(?:~)(?P<list>.+?)(?:~)")
+EXAMPLE_SPLIT_REGEX = re.compile(r"(?P<plain>~.+?~)")
+EXAMPLE_REGEX = re.compile(r"(?:~)(?P<plain>.+?)(?:~)")
 
 
 def get_commands() -> List[str]:
@@ -69,16 +68,6 @@ def colors_of(
     )
 
 
-def color_title(text: str) -> str:
-    text = colored(text.replace("* ", ""), *colors_of("title")) + "\n"
-    return text
-
-
-def color_desc(text: str) -> str:
-    text = colored(text.replace(": ", ""), *colors_of("desc")) + "\n"
-    return text
-
-
 def color_list(text: str) -> str:
     return text
 
@@ -100,40 +89,34 @@ def output(page: List[bytes]) -> None:
         if len(line) == 0:
             continue
 
-        elif line[0] == "*":
-            line = color_title(line)
+        elif line.startswith("* "):
+            line = colored(line.replace("* ", ""), *colors_of("title")) + "\n"
+            sys.stdout.buffer.write(line.encode("utf-8"))
+
+        elif line.startswith("** "):
+            line = colored(line.replace("** ", ""), *colors_of("title")) + "\n"
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         elif line[0] == ":":
-            line = color_desc(line)
+            line = colored(line.replace(": ", ""), *colors_of("desc")) + "\n"
             sys.stdout.buffer.write(line.encode("utf-8"))
 
-        elif line[0] == "-":
+        else:
             # Stylize text within backticks using yellow italics
             if "~" in line:
                 elements = ["\n", " " * SPACES]
 
                 for item in EXAMPLE_SPLIT_REGEX.split(line):
-                    item, replaced = EXAMPLE_REGEX.subn(color_highlight, item)
+                    item, replaced = EXAMPLE_REGEX.subn(color_code, item)
                     if not replaced:
-                        item = colored(item, *colors_of("list"))
+                        item = colored(item, *colors_of("plain"))
                     elements.append(item)
 
                 line = "".join(elements)
 
             # Otherwise, use the same colour for the whole line
             else:
-                line = "\n" + " " * SPACES + colored(line, *colors_of("list"))
-            sys.stdout.buffer.write(line.encode("utf-8"))
-
-        else:
-            # has code
-            if "~" in line:
-                texts = []
-                for item in EXAMPLE_SPLIT_REGEX.split(line):
-                    item, replaced = EXAMPLE_REGEX.subn(color_code, item)
-                    texts.append(item)
-                line = "".join(texts)
+                line = "\n" + " " * SPACES + colored(line, *colors_of("plain"))
             sys.stdout.buffer.write(line.encode("utf-8"))
         print()
     print()
