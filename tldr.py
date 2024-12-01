@@ -39,8 +39,8 @@ ACCEPTED_COLOR_ATTRS = ["reverse", "blink", "dark", "concealed", "underline", "b
 
 SPACES = 2
 
-EXAMPLE_SPLIT_REGEX = re.compile(r"(?P<list>`.+?`)")
-EXAMPLE_REGEX = re.compile(r"(?:`)(?P<list>.+?)(?:`)")
+EXAMPLE_SPLIT_REGEX = re.compile(r"(?P<list>~.+?~)")
+EXAMPLE_REGEX = re.compile(r"(?:~)(?P<list>.+?)(?:~)")
 
 
 def get_commands() -> List[str]:
@@ -70,12 +70,12 @@ def colors_of(
 
 
 def color_title(text: str) -> str:
-    text = colored(text.replace("# ", ""), *colors_of("title")) + "\n"
+    text = colored(text.replace("* ", ""), *colors_of("title")) + "\n"
     return text
 
 
 def color_desc(text: str) -> str:
-    text = colored(text.replace("> ", ""), *colors_of("desc")) + "\n"
+    text = colored(text.replace(": ", ""), *colors_of("desc")) + "\n"
     return text
 
 
@@ -100,17 +100,17 @@ def output(page: List[bytes]) -> None:
         if len(line) == 0:
             continue
 
-        elif line[0] == "#":
+        elif line[0] == "*":
             line = color_title(line)
             sys.stdout.buffer.write(line.encode("utf-8"))
 
-        elif line[0] == ">":
+        elif line[0] == ":":
             line = color_desc(line)
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         elif line[0] == "-":
             # Stylize text within backticks using yellow italics
-            if "`" in line:
+            if "~" in line:
                 elements = ["\n", " " * SPACES]
 
                 for item in EXAMPLE_SPLIT_REGEX.split(line):
@@ -128,7 +128,7 @@ def output(page: List[bytes]) -> None:
 
         else:
             # has code
-            if "`" in line:
+            if "~" in line:
                 texts = []
                 for item in EXAMPLE_SPLIT_REGEX.split(line):
                     item, replaced = EXAMPLE_REGEX.subn(color_code, item)
@@ -164,7 +164,7 @@ def main() -> None:
         # render local markdown files
         file_name = "-".join(options.command)
         proj_path = os.path.abspath(os.path.dirname(__file__))
-        file_path = Path(proj_path + "/pages/" + file_name + ".md")
+        file_path = Path(proj_path + "/pages/" + file_name + ".org")
         if file_path.exists():
             with file_path.open(encoding="utf-8") as open_file:
                 output(open_file.read().encode("utf-8").splitlines())
