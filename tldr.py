@@ -41,8 +41,6 @@ LEADING_SPACES_NUM = 2
 
 EXAMPLE_SPLIT_REGEX = re.compile(r"(?P<list>`.+?`)")
 EXAMPLE_REGEX = re.compile(r"(?:`)(?P<list>.+?)(?:`)")
-COMMAND_SPLIT_REGEX = re.compile(r"(?P<param>{{.+?}*}})")
-PARAM_REGEX = re.compile(r"(?:{{)(?P<param>.+?)(?:}})")
 
 
 def get_commands() -> List[str]:
@@ -117,9 +115,7 @@ def output(page: List[bytes]) -> None:
             # Otherwise, use the same colour for the whole line
             else:
                 line = (
-                    "\n"
-                    + " " * LEADING_SPACES_NUM
-                    + colored(line, *colors_of("list"))
+                    "\n" + " " * LEADING_SPACES_NUM + colored(line, *colors_of("list"))
                 )
 
             sys.stdout.buffer.write(line.encode("utf-8"))
@@ -127,26 +123,8 @@ def output(page: List[bytes]) -> None:
         # Handle an example command
         elif line[0] == "`":
             line = line[1:-1]  # Remove backticks for parsing
-
-            # Handle escaped placeholders first
-            line = line.replace(r"\{\{", "__ESCAPED_OPEN__")
-            line = line.replace(r"\}\}", "__ESCAPED_CLOSE__")
-
-            elements = [" " * 2 * LEADING_SPACES_NUM]
-            for item in COMMAND_SPLIT_REGEX.split(line):
-                item, replaced = PARAM_REGEX.subn(
-                    lambda x: colored(x.group("param"), *colors_of("param")), item
-                )
-                if not replaced:
-                    item = colored(item, *colors_of("code"))
-                elements.append(item)
-
-            line = "".join(elements)
-
-            # Restore escaped placeholders
-            line = line.replace("__ESCAPED_OPEN__", "{{")
-            line = line.replace("__ESCAPED_CLOSE__", "}}")
-
+            line = " " * 2 * LEADING_SPACES_NUM + line
+            line = colored(line, *colors_of("code"))
             sys.stdout.buffer.write(line.encode("utf-8"))
         print()
     print()
