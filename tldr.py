@@ -53,8 +53,7 @@ def get_commands() -> List[str]:
 def colors_of(
     key: str,
 ) -> Tuple[Optional[Color], Optional[Highlight], Optional[Iterable[Attribute]]]:
-    env_key = "TLDR_COLOR_%s" % key.upper()
-    values = os.environ.get(env_key, DEFAULT_COLORS[key]).strip().split()
+    values = DEFAULT_COLORS[key].strip().split()
     color = None
     on_color = None
     attrs = []
