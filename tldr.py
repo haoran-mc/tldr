@@ -84,21 +84,16 @@ def color_list(text: str) -> str:
 
 
 def color_code(text: Match) -> str:
+    return colored(text.group(), *colors_of("code"))
+
+
+def color_highlight(text: Match) -> str:
     # Use ANSI escapes to enable italics at the start and disable at the end
     # Also use the color yellow to differentiate from the default green
-    return "\x1b[3m" + colored(text.group("list"), *colors_of("code")) + "\x1b[23m"
-
-
-def color_highlight(text: str) -> str:
-    return text
+    return "\x1b[3m" + colored(text.group(), "yellow") + "\x1b[23m"
 
 
 def output(page: List[bytes]) -> None:
-    def emphasise_example(x: Match) -> str:
-        # Use ANSI escapes to enable italics at the start and disable at the end
-        # Also use the color yellow to differentiate from the default green
-        return "\x1b[3m" + colored(x.group("list"), "yellow") + "\x1b[23m"
-
     for line in page:
         line = line.rstrip().decode("utf-8")
 
@@ -119,7 +114,7 @@ def output(page: List[bytes]) -> None:
                 elements = ["\n", " " * SPACES]
 
                 for item in EXAMPLE_SPLIT_REGEX.split(line):
-                    item, replaced = EXAMPLE_REGEX.subn(emphasise_example, item)
+                    item, replaced = EXAMPLE_REGEX.subn(color_highlight, item)
                     if not replaced:
                         item = colored(item, *colors_of("list"))
                     elements.append(item)
@@ -131,13 +126,14 @@ def output(page: List[bytes]) -> None:
                 line = "\n" + " " * SPACES + colored(line, *colors_of("list"))
             sys.stdout.buffer.write(line.encode("utf-8"))
 
-        elif line[0] == "`":
-            line = line[1:-1]  # Remove backticks for parsing
-            line = " " * 2 * SPACES + line
-            line = colored(line, *colors_of("code"))
-            sys.stdout.buffer.write(line.encode("utf-8"))
-
         else:
+            # has code
+            if "`" in line:
+                texts = []
+                for item in EXAMPLE_SPLIT_REGEX.split(line):
+                    item, replaced = EXAMPLE_REGEX.subn(color_code, item)
+                    texts.append(item)
+                line = "".join(texts)
             sys.stdout.buffer.write(line.encode("utf-8"))
         print()
     print()
