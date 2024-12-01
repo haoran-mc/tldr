@@ -1,11 +1,12 @@
 # git log
+* git log
 
-> 查看提交历史。
-> 更多信息：<https://git-scm.com/docs/git-log>.
 
-- 按时间先后顺序列出当前仓库所有的提交，最近的更新排在最上面：
+: 更多信息：<https://git-scm.com/docs/git-log>.
 
-`git log`
+- ~git log~
+
+按时间先后顺序列出当前仓库所有的提交，最近的更新排在最上面：
 
 - 查看指定文件或指定目录的历史，包括每次提交所引入的差异：
 
@@ -34,3 +35,16 @@
 - 查看两个日期之间的提交（yyyy-mm-dd）：
 
 `git log --before "{{2017-01-29}}" --after "{{2017-01-17}}"`
+
+~hello~
+
+-
+
+: hello
+
+
+* git log
+
+: 更多信息
+
+- 
