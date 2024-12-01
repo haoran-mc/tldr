@@ -131,11 +131,13 @@ def output(page: List[bytes]) -> None:
                 line = "\n" + " " * SPACES + colored(line, *colors_of("list"))
             sys.stdout.buffer.write(line.encode("utf-8"))
 
-        # Handle an example command
         elif line[0] == "`":
             line = line[1:-1]  # Remove backticks for parsing
             line = " " * 2 * SPACES + line
             line = colored(line, *colors_of("code"))
+            sys.stdout.buffer.write(line.encode("utf-8"))
+
+        else:
             sys.stdout.buffer.write(line.encode("utf-8"))
         print()
     print()
