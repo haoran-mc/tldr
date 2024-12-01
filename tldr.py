@@ -17,6 +17,7 @@ DEFAULT_COLORS = {
     "desc": "",
     "plain": "",
     "code": "blue",
+    "highlight": "yellow",
 }
 
 # See more details in the README:
@@ -38,8 +39,10 @@ ACCEPTED_COLOR_ATTRS = ["reverse", "blink", "dark", "concealed", "underline", "b
 
 SPACES = 4
 
-EXAMPLE_SPLIT_REGEX = re.compile(r"(?P<plain>~.+?~)")
-EXAMPLE_REGEX = re.compile(r"(?:~)(?P<plain>.+?)(?:~)")
+CODE_SPLIT_REGEX = re.compile(r"(?P<code>~.+?~)")
+CODE_REGEX = re.compile(r"(?:~)(?P<code>.+?)(?:~)")
+HIGHLIGHT_SPLIT_REGEX = re.compile(r"(?P<highlight>=.+?=)")
+HIGHLIGHT_REGEX = re.compile(r"(?:=)(?P<highlight>.+?)(?:=)")
 
 
 def get_commands() -> List[str]:
@@ -68,18 +71,42 @@ def colors_of(
     )
 
 
-def color_list(text: str) -> str:
-    return text
-
-
 def color_code(text: Match) -> str:
-    return colored(text.group(), *colors_of("code"))
+    return colored(text.group("code"), *colors_of("code"))
 
 
 def color_highlight(text: Match) -> str:
     # Use ANSI escapes to enable italics at the start and disable at the end
     # Also use the color yellow to differentiate from the default green
-    return "\x1b[3m" + colored(text.group(), "yellow") + "\x1b[23m"
+    return (
+        "\x1b[3m"
+        + colored(text.group("highlight"), *colors_of("highlight"))
+        + "\x1b[23m"
+    )
+
+
+def handle_code(line: str) -> str:
+    elements = []
+    for item in CODE_SPLIT_REGEX.split(line):
+        item, replaced = CODE_REGEX.subn(color_code, item)
+        if not replaced:
+            item = colored(item, *colors_of("plain"))
+        elements.append(item)
+
+    line = "".join(elements)
+    return line
+
+
+def handle_highlight(line: str) -> str:
+    elements = []
+    for item in HIGHLIGHT_SPLIT_REGEX.split(line):
+        item, replaced = HIGHLIGHT_REGEX.subn(color_highlight, item)
+        if not replaced:
+            item = colored(item, *colors_of("plain"))
+        elements.append(item)
+
+    line = "".join(elements)
+    return line
 
 
 def output(page: List[bytes]) -> None:
@@ -97,26 +124,18 @@ def output(page: List[bytes]) -> None:
             line = colored(line.replace("** ", ""), *colors_of("title")) + "\n"
             sys.stdout.buffer.write(line.encode("utf-8"))
 
-        elif line[0] == ":":
+        elif line.startswith(": "):
             line = colored(line.replace(": ", ""), *colors_of("desc")) + "\n"
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         else:
-            # Stylize text within backticks using yellow italics
             if "~" in line:
-                elements = ["\n", " " * SPACES]
+                line = handle_code(line)
 
-                for item in EXAMPLE_SPLIT_REGEX.split(line):
-                    item, replaced = EXAMPLE_REGEX.subn(color_code, item)
-                    if not replaced:
-                        item = colored(item, *colors_of("plain"))
-                    elements.append(item)
+            if "=" in line:
+                line = handle_highlight(line)
 
-                line = "".join(elements)
-
-            # Otherwise, use the same colour for the whole line
-            else:
-                line = "\n" + " " * SPACES + colored(line, *colors_of("plain"))
+            line = "\n" + " " * SPACES + line
             sys.stdout.buffer.write(line.encode("utf-8"))
         print()
     print()
