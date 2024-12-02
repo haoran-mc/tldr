@@ -129,7 +129,7 @@ def output(page: List[bytes]) -> None:
             if "=" in line:
                 line = handle_highlight(line)
 
-            line = "\n" + " " * SPACES + line
+            line = " " * SPACES + line
             sys.stdout.buffer.write(line.encode("utf-8"))
         print()
     print()
