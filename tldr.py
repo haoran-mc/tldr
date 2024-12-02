@@ -123,13 +123,19 @@ def output(page: List[bytes]) -> None:
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         else:
+            leading_spaces = len(line) - len(line.lstrip())
+            line = line.lstrip()
+
+            if line.startswith("- "):
+                line = line.replace("- ", "◦ ", 1)
+
             if "~" in line:
                 line = handle_code(line)
 
             if "=" in line:
                 line = handle_highlight(line)
 
-            line = " " * SPACES + line
+            line = " " * (SPACES + leading_spaces) + line
             sys.stdout.buffer.write(line.encode("utf-8"))
         print()
     print()
