@@ -13,7 +13,8 @@ from termcolor._types import Color, Highlight, Attribute
 from typing import cast, Match
 
 DEFAULT_COLORS = {
-    "title": "",
+    "title1": "",
+    "title2": "underline",
     "desc": "",
     "plain": "",
     "code": "blue",
@@ -109,19 +110,16 @@ def output(page: List[bytes]) -> None:
     for line in page:
         line = line.rstrip().decode("utf-8")
 
-        if len(line) == 0:
-            continue
-
-        elif line.startswith("* "):
-            line = colored(line.replace("* ", ""), *colors_of("title")) + "\n"
+        if line.startswith("* "):
+            line = colored(line.replace("* ", ""), *colors_of("title1"))
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         elif line.startswith("** "):
-            line = colored(line.replace("** ", ""), *colors_of("title")) + "\n"
+            line = colored(line.replace("** ", ""), *colors_of("title2"))
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         elif line.startswith(": "):
-            line = colored(line.replace(": ", ""), *colors_of("desc")) + "\n"
+            line = colored(line.replace(": ", ""), *colors_of("desc"))
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         else:
