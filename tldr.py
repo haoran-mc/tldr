@@ -18,7 +18,7 @@ DEFAULT_COLORS = {
     "desc": "",
     "plain": "",
     "code": "blue",
-    "highlight": "yellow reverse",
+    "highlight": "yellow",
 }
 
 # See more details in the README:
