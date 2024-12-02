@@ -17,7 +17,7 @@ DEFAULT_COLORS = {
     "desc": "",
     "plain": "",
     "code": "blue",
-    "highlight": "yellow",
+    "highlight": "yellow reverse",
 }
 
 # See more details in the README:
@@ -78,11 +78,7 @@ def color_code(text: Match) -> str:
 def color_highlight(text: Match) -> str:
     # Use ANSI escapes to enable italics at the start and disable at the end
     # Also use the color yellow to differentiate from the default green
-    return (
-        "\x1b[3m"
-        + colored(text.group("highlight"), *colors_of("highlight"))
-        + "\x1b[23m"
-    )
+    return colored(text.group("highlight"), *colors_of("highlight"))
 
 
 def handle_code(line: str) -> str:
