@@ -14,11 +14,11 @@ from typing import cast, Match
 
 DEFAULT_COLORS = {
     "title1": "",
+    "desc": "cyan blink",
     "title2": "underline",
-    "desc": "",
-    "plain": "",
     "code": "blue",
     "highlight": "yellow",
+    "plain": "",
 }
 
 # See more details in the README:
@@ -111,15 +111,15 @@ def output(page: List[bytes]) -> None:
         line = line.rstrip().decode("utf-8")
 
         if line.startswith("* "):
-            line = colored(line.replace("* ", ""), *colors_of("title1"))
+            line = colored(line.replace("* ", "", 1), *colors_of("title1"))
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         elif line.startswith("** "):
-            line = colored(line.replace("** ", ""), *colors_of("title2"))
+            line = colored(line.replace("** ", "", 1), *colors_of("title2"))
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         elif line.startswith(": "):
-            line = colored(line.replace(": ", ""), *colors_of("desc"))
+            line = colored(line.replace(": ", "", 1), *colors_of("desc"))
             sys.stdout.buffer.write(line.encode("utf-8"))
 
         else:
