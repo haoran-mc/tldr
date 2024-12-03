@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# PYTHON_ARGCOMPLETE_OK
-
 import sys
 import os
 import re
@@ -161,9 +158,9 @@ def main() -> None:
     options = parser.parse_args()
 
     if len(sys.argv) == 1:
-        print("\n".join(get_commands()))
+        print(" | ".join(get_commands()))
     else:
-        # render local markdown files
+        # render local org files
         file_name = "-".join(options.command)
         proj_path = os.path.abspath(os.path.dirname(__file__))
         file_path = Path(proj_path + "/pages/" + file_name + ".org")

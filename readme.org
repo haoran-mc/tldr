@@ -14,21 +14,19 @@
 
 *sample of a command:*
 #+begin_example
-# arch
+  * git - Distributed version control system.
 
-> Display the name of the system architecture, or run a command under a different architecture.
-> See also: `uname`.
-> More information: <https://keith.github.io/xcode-man-pages/arch.1.html>.
+  : Some subcommands such as ~commit~, ~add~, ~branch~, ~checkout~, ~push~, etc. have their own usage documentation.
+  : More information: <https://git-scm.com/>.
 
-- Display the system's architecture:
+  ** Example
+  - ~git log --help~
 
-`arch`
-
-- Run a command using x86_64:
-
-`arch -x86_64 "{{command}}"`
-
-- Run a command using arm:
-
-`arch -arm64 "{{command}}"`
+  ** Parameter
+  - =branch=       List, create, or delete branches.
+  - =clone=        Clone a repository into a new directory.
+  - =log=          Show commit logs.
+  - =remote=       Manage set of tracked repositories.
+  - =switch=       Switch between Git branches. Requires Git version 2.23+.
+  - =stash=        Stash local Git changes in a temporary area.
 #+end_example
