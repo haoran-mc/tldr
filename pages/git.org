@@ -1,0 +1,15 @@
+* git - Distributed version control system.
+
+: Some subcommands such as ~commit~, ~add~, ~branch~, ~checkout~, ~push~, etc. have their own usage documentation.
+: More information: <https://git-scm.com/>.
+
+** Example
+- ~git log --help~
+
+** Parameter
+- =branch=       List, create, or delete branches.
+- =clone=        Clone a repository into a new directory.
+- =log=          Show commit logs.
+- =remote=       Manage set of tracked repositories.
+- =switch=       Switch between Git branches. Requires Git version 2.23+.
+- =stash=        Stash local Git changes in a temporary area.

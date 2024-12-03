@@ -1,0 +1,9 @@
+* git stash - Stash local Git changes in a temporary area.
+
+- ~git stash save "save message"~
+- ~git stash list~
+- ~git stash show stash@{0} -p~
+- ~git stash apply stash@{0}~
+- ~git stash pop~
+- ~git stash drop stash@{0}~
+- ~git stash clear~

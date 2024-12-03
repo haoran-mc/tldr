@@ -1,0 +1,13 @@
+* git switch - Switch between Git branches. Requires Git version 2.23+.
+
+: usage: git switch [<options>] [--no-guess] <branch>
+:        git switch [<options>] --detach [<start-point>]
+:        git switch [<options>] (-c|-C) <new-branch> [<start-point>]
+:        git switch [<options>] --orphan <new-branch>
+
+- ~git switch <branch-name>~                     Switch to an existing branch.
+- ~git switch -c <branch-name>~                  Create a new branch and switch to it.
+- ~git switch --detach 83a6f0a~                  Switching to a commit without creating a new branch.
+- ~git switch -~                                 Switch to the previous branch.
+- ~git switch --orphan <branch-name>~            Create a branch without any commit history.
+- ~git switch --merge branch_name~               Switch to a branch and automatically merge the current branch and any uncommitted changes into it.

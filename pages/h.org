@@ -1,0 +1,16 @@
+* help
+
+** position:
+1. ~which~             Locate a program in the user's path.
+   ␣                 If there are multiple executables which match, use =-a= display all.
+2. ~type~              Display the type of a command.
+3. ~whereis~           Locate the binary, source, and manual page files for a command.
+4. ~locate/updatedb~   Find filenames quickly.
+5. ~find → fd~         Find files or directories under a directory tree, recursively.
+
+** function:
+1. ~--help~            A brief version of the information in the man command.
+2. ~whatis~            Search a set of database files for short descriptions of system commands for keywords.
+3. ~man → tldr~        Format and display manual pages. ~man man~ see more.
+4. ~info~              Reads documentation stored in the info format.
+5. ~/usr/share/doc~

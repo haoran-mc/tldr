@@ -1,0 +1,24 @@
+* git log - Show a history of commits.
+
+: usage: git log [<options>] [<revision-range>] [[--] <path>...]
+:    or: git show [<options>] <object>...
+
+** Example
+- ~git lo~                 ~git log --oneline --graph~
+  - --oneline            This is a shorthand for "--pretty=oneline --abbrev-commit" used together.
+  - --graph              Draw a text-based graphical representation of the commit history on the left hand side of the output.
+
+- ~git lp~                 ~git log --patch~
+  - -p, -u, --patch      Draw a text-based graphical representation of the commit history on the left hand side of the output.
+
+- ~git la~                 ~git log --format='%an <%ae>'~ This command will output a list of all authors who have made commits
+  ␣                                        in your repository, you may use =| sort -u= to sort the output alphabetically and
+  ␣                                        then removes duplicate lines. This ensures each author appears only once in the list.
+  - %n                   newline
+  - %an                  author name
+  - %aN                  author email
+
+** Parameter
+- =--author=               Limit the commits output to ones with author/committer header lines that match the specified pattern (regular expression).
+- =--graph=                Draw a text-based graphical representation of the commit history on the left hand side of the output.
+- =--reverse=              Output the commits chosen to be shown (see Commit Limiting section above) in reverse order.

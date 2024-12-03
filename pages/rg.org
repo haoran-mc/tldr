@@ -1,0 +1,12 @@
+* rg - Ripgrep is a recursive line-oriented search tool.
+
+: Aims to be a faster alternative to ~grep~.
+
+** Example
+- ~rg <glob> -g '!/*/*'~
+
+** Parameter
+- =-g <glob>=            Include or exclude files and directories for searching that match the given glob.
+- =-e=                   regular-expression.
+- =-i=                   case-insensitive.
+- =-S=                   smartcase.

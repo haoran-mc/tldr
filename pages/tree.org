@@ -1,0 +1,4 @@
+* tree - Show the contents of the current directory as a tree.
+
+- =-L=                   levels of depth.
+- =-d=                   directories only.

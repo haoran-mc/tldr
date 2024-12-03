@@ -1,0 +1,57 @@
+* Homebrew - a package manager for macOS and Linux.
+
+** 安装与更新
+- ~brew install FORMULA|CASK...~
+  安装软件
+
+- ~brew upgrade [FORMULA|CASK...]~
+  安装新版本的包，但是旧版本依然会保留
+
+- ~brew upgrade~
+  brew 自身更新
+
+- ~brew outdated~
+  查看哪些包可以更新
+
+- ~brew pin~
+  锁定某个包不更新
+
+- ~brew unpin~
+  取消锁定
+
+** 卸载软件
+- ~brew uninstall FORMULA|CASK~
+  卸载软件
+
+** 搜索软件
+- ~brew search TEXT|/REGEX/~
+  在仓库搜索包含关键字的软件包
+
+- ~brew info [FORMULA|CASK...]~
+  查看已安装包信息
+
+** 清理缓存
+- ~brew cleanup~
+  清理所有包的旧版本
+
+- ~brew cleanup [FORMULA...]~
+  清理指定包的旧版本
+
+- ~brew cleanup -n~
+  查看可清浬的旧版本包，不执行实际操作
+
+** 软件服务管理
+- ~brew services list~
+  查看使用brew安装的服务列表
+
+- ~brew services run formula|--all~
+  启动服务（仅启动不注册）
+
+- ~brew services start formula|--all~
+  启动服务，并注册
+
+- ~brew services stop formula|--all~
+  停止服务，并注册
+
+- ~brew services restart formula|--all~
+  重启服务，并注册
