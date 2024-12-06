@@ -43,9 +43,12 @@ HIGHLIGHT_SPLIT_REGEX = re.compile(r"(?P<highlight>=.+?=)")
 HIGHLIGHT_REGEX = re.compile(r"(?:=)(?P<highlight>.+?)(?:=)")
 
 
-def get_commands() -> List[str]:
-    commands = ["hello"]
-    return commands
+def get_commands(path: str) -> List[str]:
+    cmds = []
+    for file in Path(path).rglob("*"):
+        if file.is_file():
+            cmds.append(file.stem)
+    return sorted(cmds)
 
 
 def colors_of(
@@ -154,21 +157,22 @@ def create_parser() -> ArgumentParser:
 
 def main() -> None:
     parser = create_parser()
-
     options = parser.parse_args()
 
+    proj_path = os.path.abspath(os.path.dirname(__file__))
+    page_path = proj_path + "/pages/"
+
     if len(sys.argv) == 1:
-        print(" | ".join(get_commands()))
+        print(" | ".join(get_commands(page_path)))
     else:
         # render local org files
         file_name = "-".join(options.command)
-        proj_path = os.path.abspath(os.path.dirname(__file__))
-        file_path = Path(proj_path + "/pages/" + file_name + ".org")
+        file_path = Path(page_path + file_name + ".org")
         if file_path.exists():
             with file_path.open(encoding="utf-8") as open_file:
                 output(open_file.read().encode("utf-8").splitlines())
         else:
-            print("No such command")
+            print("No such command.")
 
 
 def tldr() -> None:
