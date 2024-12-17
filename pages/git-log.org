@@ -18,6 +18,10 @@
   - %an                  author name
   - %aN                  author email
 
+- ~git log -S <string> /path/to/file~ Which shows you commits which introduce or remove an instance of that string.
+  - -S <string>
+  - -G <regex>
+
 ** Parameter
 - =--author=               Limit the commits output to ones with author/committer header lines that match the specified pattern (regular expression).
 - =--graph=                Draw a text-based graphical representation of the commit history on the left hand side of the output.
