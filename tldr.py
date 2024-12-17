@@ -107,6 +107,7 @@ def handle_highlight(line: str) -> str:
 
 
 def output(page: List[bytes]) -> None:
+    print()
     for line in page:
         line = line.rstrip().decode("utf-8")
 
