@@ -1,0 +1,4 @@
+* git reset - Undo commits or unstage changes, by resetting the current Git HEAD to the specified state.
+
+- ~git reset /path/to/file1 /path/to/file2~
+- ~git reset --soft HEAD^1~
