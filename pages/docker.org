@@ -1,0 +1,7 @@
+* docker - Manage Docker containers and images.
+
+** Parameter
+- =login=        Log into a Docker registry.
+- =commit=       Create a new image from a container’s changes.
+- =tag=          Assign tags to existing Docker images.
+- =push=         Upload an image to a registry.

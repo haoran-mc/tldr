@@ -1,0 +1,5 @@
+* docker push - Upload an image to a registry.
+
+1. ~docker login -u haoran232~
+2. ~docker tag syslog-send haoran232/syslog-send:250121~
+3. ~docker push haoran232/syslog-send:250121~
