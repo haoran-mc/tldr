@@ -1,3 +1,4 @@
 * go test - Tests Go packages (files have to end with =_test.go=).
 
 - ~cd util && go test -v .~
+- ~go test -run TestFoo ./mypkg~
