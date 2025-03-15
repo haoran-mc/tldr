@@ -1,0 +1,4 @@
+* Aider is AI pair programming in your terminal
+
+- ~aider --list-models deepseek~
+- ~aider factorial.py question.go~
