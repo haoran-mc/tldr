@@ -1,0 +1,34 @@
+* pipx - Install and run Python applications in isolated environments.
+
+** 安装工具
+- ~pipx install <package>~                     安装 Python CLI 工具，并创建独立环境
+- ~pipx install --python python3.13 <package>~ 指定 Python 版本安装工具
+- ~pipx install --force <package>~             重新安装已存在的工具
+- ~pipx install --verbose <package>~           显示详细安装信息
+
+** 卸载工具
+- ~pipx uninstall <package>~                   卸载已安装的工具，不影响其他工具
+- ~pipx uninstall --verbose <package>~         显示详细的卸载信息
+- ~pipx uninstall --all~                       卸载 pipx 安装的所有工具
+
+** 搜索和查看已安装工具
+- ~pipx list~                                  查看已安装的所有工具及其路径
+- ~pipx run --help~                            显示 pipx run 命令的帮助信息
+- ~pipx run <package> --help~                  运行未安装的 CLI 工具，并显示帮助信息
+- ~pipx which <package>~                       查看已安装工具的完整路径
+
+** 运行未安装的工具
+- ~pipx run <package>~                         运行未安装的 Python CLI 工具
+- ~pipx run --python python3.13 <package>~     使用指定的 Python 版本运行工具
+- ~pipx runpip <package> install <dependency>~ 在已安装的工具环境中安装额外的依赖
+
+** 更新工具
+- ~pipx upgrade <package>~                     升级指定工具到最新版本
+- ~pipx upgrade --include-injected <package>~  升级工具及其所有额外依赖
+- ~pipx upgrade-all~                           升级所有已安装的工具
+- ~pipx reinstall <package>~                   重新安装指定的工具
+- ~pipx reinstall-all~                         重新安装所有工具
+
+** 清理环境
+- ~pipx prune~                                 删除不再使用的虚拟环境
+- ~pipx uninstall --all~                       卸载所有 pipx 安装的工具
