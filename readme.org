@@ -29,4 +29,6 @@
   - =remote=       Manage set of tracked repositories.
   - =switch=       Switch between Git branches. Requires Git version 2.23+.
   - =stash=        Stash local Git changes in a temporary area.
+
+  # Comment line, Git is a 100% free tool aimed to version control your code.
 #+end_example

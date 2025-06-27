@@ -123,6 +123,9 @@ def output(page: List[bytes]) -> None:
             line = colored(line.replace(": ", "", 1), *colors_of("desc"))
             sys.stdout.buffer.write(line.encode("utf-8"))
 
+        elif line.startswith("# "):
+            continue
+
         else:
             leading_spaces = len(line) - len(line.lstrip())
             line = line.lstrip()
