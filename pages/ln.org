@@ -1,0 +1,4 @@
+* ln - Create links to files and directories.
+
+- ~ln -s source target~ 软链接，类似 Windows 系统的快捷方式（常用这个）；
+- ~ln source target~    具有相同 inode 节点号的多个文件互为硬链接文件；
